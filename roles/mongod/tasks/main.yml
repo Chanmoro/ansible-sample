@@ -1,0 +1,13 @@
+---
+- name: copy mongodb-org repos
+  copy: src=mongodb-org-3.0.repo dest=/etc/yum.repos.d/mongodb-org-3.0.repo
+
+- name: install mongod
+  yum: name=mongodb-org state=latest
+  notify: restart mongod
+
+- name: be sure mongod is running and enabled
+  service: name=mongod state=started enabled=yes 
+
+# - name: copy httpd.conf
+#  copy: src=conf/httpd.conf dest=/etc/httpd/conf/httpd.conf

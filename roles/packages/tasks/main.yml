@@ -1,0 +1,29 @@
+---
+# EPEL/Remiを追加
+- name: add repos
+  yum: name={{item}}
+  with_items:
+    - http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    - http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+
+# yum -y update
+- name: upgrade all packages
+  yum: name=* state=latest
+
+# selinuxをoff向こうにするために必要
+- name: selinux python
+  yum: name=libselinux-python state=installed
+
+# 不要なサービスを無効にする
+- name: iptables disabled
+  service: name=iptables state=stopped enabled=False
+  
+- name: ip6tables disabled
+  service: name=ip6tables state=stopped enabled=False
+  
+- name: postfix disabled
+  service: name=postfix state=stopped enabled=False
+
+- name: selinux disabled
+  selinux: state=disabled
+
